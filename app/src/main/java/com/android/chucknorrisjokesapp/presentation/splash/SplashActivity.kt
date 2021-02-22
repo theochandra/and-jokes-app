@@ -1,7 +1,6 @@
 package com.android.chucknorrisjokesapp.presentation.splash
 
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -9,6 +8,7 @@ import com.android.chucknorrisjokesapp.R
 import com.android.chucknorrisjokesapp.base.BaseActivity
 import com.android.chucknorrisjokesapp.databinding.ActivitySplashBinding
 import com.android.chucknorrisjokesapp.di.Injector
+import com.android.chucknorrisjokesapp.presentation.category.JokeCategoryActivity
 import com.android.domain.Result
 import javax.inject.Inject
 
@@ -44,10 +44,9 @@ class SplashActivity : BaseActivity() {
                 }
                 is Result.Success -> {
                     binding.progressBar.visibility = View.GONE
-                    val categories = result.data
-                    for (category in categories) {
-                        Log.i("SplashActivity", "Category ::: $category")
-                    }
+                    val categories: ArrayList<String> = result.data as ArrayList<String>
+                    val intent = JokeCategoryActivity.newIntent(this, categories)
+                    startActivity(intent)
                 }
                 is Result.Error -> {
                     binding.progressBar.visibility = View.GONE
