@@ -15,14 +15,26 @@
         android:layout_height="match_parent"
         tools:context=".presentation.splash.SplashActivity">
 
-        <ProgressBar
-            android:id="@+id/progress_bar"
+        <ImageView
+            android:id="@+id/iv_splash"
+            android:src="@drawable/ic_splash"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="@dimen/zero_dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_xl"
+            android:layout_marginEnd="@dimen/margin_xl"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_splash" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

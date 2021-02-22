@@ -4,8 +4,12 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.chucknorrisjokesapp.R
+import com.android.chucknorrisjokesapp.databinding.ActivityJokeCategoryBinding
+import com.android.chucknorrisjokesapp.presentation.detail.DetailJokeActivity
+import com.android.chucknorrisjokesapp.presentation.search.SearchJokeActivity
 
 class JokeCategoryActivity : AppCompatActivity() {
 
@@ -20,20 +24,48 @@ class JokeCategoryActivity : AppCompatActivity() {
         }
     }
 
+    private lateinit var binding: ActivityJokeCategoryBinding
+
     private lateinit var categories: ArrayList<String>
 
     private fun getExtraData() {
         categories = intent.getStringArrayListExtra(EXTRA_CATEGORIES)
+        categoryAdapter.setCategoryList(categories)
     }
+
+    private lateinit var categoryAdapter: CategoryAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_joke_category)
 
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_joke_category)
+
+        initRecyclerView()
         getExtraData()
+        searchClicked()
+    }
 
-        for (category in categories) {
-            Log.i("JokeCategoryActivity", "Category ::: $category")
+    private fun initRecyclerView() {
+        categoryAdapter = CategoryAdapter {
+            category: String -> categoryItemClicked(category)
+        }
+        binding.rvCategory.apply {
+            layoutManager = LinearLayoutManager(this@JokeCategoryActivity,
+                LinearLayoutManager.VERTICAL, false)
+            adapter = categoryAdapter
         }
     }
+
+    private fun categoryItemClicked(category: String) {
+        val intent = Intent(this, DetailJokeActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun searchClicked() {
+        binding.etQuery.setOnClickListener {
+            val intent = Intent(this, SearchJokeActivity::class.java)
+            startActivity(intent)
+        }
+    }
+
 }

@@ -3,4 +3,6 @@
 
     <string name="label_button_oke">Oke</string>
     <string name="label_dialog_title_alert">Alert</string>
+
+    <string name="hint_search_jokes">Type to search some jokes..</string>
 </resources>
