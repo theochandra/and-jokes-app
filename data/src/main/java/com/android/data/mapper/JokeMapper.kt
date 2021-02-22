@@ -4,8 +4,9 @@ import com.android.data.response.JokeListResponse
 import com.android.data.response.JokeResponse
 import com.android.domain.model.Joke
 import com.android.domain.model.JokeList
+import javax.inject.Inject
 
-class JokeMapper {
+class JokeMapper @Inject constructor() {
 
     fun map(response: JokeResponse): Joke {
         return Joke(
