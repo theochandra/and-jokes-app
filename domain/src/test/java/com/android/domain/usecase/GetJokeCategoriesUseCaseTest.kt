@@ -33,18 +33,6 @@ class GetJokeCategoriesUseCaseTest {
     }
 
     @Test
-    fun `returns nothing when loading`() {
-        runBlocking {
-            given(repository.getJokeCategories())
-                .willReturn(Result.Loading)
-
-            sut.execute()
-
-            verify(repository).getJokeCategories()
-        }
-    }
-
-    @Test
     fun `returns list categories when success retrieving data`() {
         runBlocking {
             val categories: List<String> = mock()

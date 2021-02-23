@@ -3,16 +3,14 @@ package com.android.chucknorrisjokesapp.presentation.detail
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
+import android.view.MenuItem
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.android.chucknorrisjokesapp.R
 import com.android.chucknorrisjokesapp.base.BaseActivity
 import com.android.chucknorrisjokesapp.databinding.ActivityDetailJokeBinding
 import com.android.chucknorrisjokesapp.di.Injector
-import com.android.chucknorrisjokesapp.presentation.mapper.map
 import com.android.chucknorrisjokesapp.presentation.model.JokeVM
-import com.android.domain.Result
 import javax.inject.Inject
 
 class DetailJokeActivity : BaseActivity() {
@@ -29,22 +27,25 @@ class DetailJokeActivity : BaseActivity() {
         }
 
         @JvmStatic
-        fun newIntent(context: Context, jokeVM: JokeVM): Intent {
+        fun newIntent(context: Context, category: String, jokeVM: JokeVM): Intent {
             val intent = Intent(context, DetailJokeActivity::class.java)
+            intent.putExtra(EXTRA_CATEGORY, category)
             intent.putExtra(EXTRA_PARCEL_JOKE, jokeVM)
             return intent
         }
     }
 
-    private var category: String? = null
+    private lateinit var category: String
     private var jokeVM: JokeVM? = null
 
     private fun getExtraData() {
         intent.getStringExtra(EXTRA_CATEGORY)?.let {
             category = it
         }
-
-        jokeVM = intent.getParcelableExtra(EXTRA_PARCEL_JOKE)
+        intent.getParcelableExtra<JokeVM>(EXTRA_PARCEL_JOKE)?.let {
+            jokeVM = it
+        }
+//        jokeVM = intent.getParcelableExtra(EXTRA_PARCEL_JOKE)
     }
 
     @Inject
@@ -52,8 +53,6 @@ class DetailJokeActivity : BaseActivity() {
 
     private lateinit var viewModel: DetailJokeViewModel
     private lateinit var binding: ActivityDetailJokeBinding
-
-//    private val mapper = JokeVmMapper()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,41 +68,64 @@ class DetailJokeActivity : BaseActivity() {
         binding.viewModel = viewModel
 
         getExtraData()
-        initJoke()
+        initJokeFromExtraData()
         getRandomJokeByCategory()
-        observeStateData()
+        observeJoke()
+        observeError()
+        observeException()
 
-        val actionBar = supportActionBar
-        actionBar?.setDisplayHomeAsUpEnabled(true)
-    }
-
-    private fun initJoke() {
-        binding.joke = jokeVM
-    }
-
-    private fun getRandomJokeByCategory() {
-        category?.let {
-            viewModel.getRandomJokeByCategory(it)
+        supportActionBar?.apply {
+            setDisplayShowTitleEnabled(true)
+            setDisplayHomeAsUpEnabled(true)
+            title = category
         }
     }
 
-    private fun observeStateData() {
-        viewModel.stateData.observe(this, { result ->
-            when(result) {
-                Result.Loading -> {
-                    binding.progressBar.visibility = View.VISIBLE
-                }
-                is Result.Success -> {
-                    binding.progressBar.visibility = View.GONE
-                    val jokeVM = map(result.data)
-                    binding.joke = jokeVM
-                }
-                is Result.Error -> {
-                    binding.progressBar.visibility = View.GONE
-                }
-                is Result.Exception -> {
-                    binding.progressBar.visibility = View.GONE
-                }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                return true
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun initJokeFromExtraData() {
+        jokeVM?.let { joke ->
+            binding.joke = joke
+        }
+    }
+
+    private fun getRandomJokeByCategory() {
+        if (jokeVM != null) return
+        viewModel.getRandomJokeByCategory(category)
+    }
+
+    private fun observeJoke() {
+        viewModel.joke.observe(this, { jokeVM ->
+            binding.joke = jokeVM
+        })
+    }
+
+    private fun observeError() {
+        viewModel.error.observe(this, { errorMessage ->
+            showAlertMessage(
+                getString(R.string.label_dialog_title_alert),
+                errorMessage,
+                getString(R.string.label_button_oke)
+            )
+        })
+    }
+
+    private fun observeException() {
+        viewModel.exception.observe(this, { exception ->
+            exception.message?.let { errorMessage ->
+                showAlertMessage(
+                    getString(R.string.label_dialog_title_alert),
+                    errorMessage,
+                    getString(R.string.label_button_oke)
+                )
             }
         })
     }

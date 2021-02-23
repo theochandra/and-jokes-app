@@ -35,18 +35,6 @@ class GetRandomJokeByCategoryUseCaseTest {
     }
 
     @Test
-    fun `returns nothing when loading`() {
-        runBlocking {
-            given(repository.getRandomJokeByCategory(any()))
-                .willReturn(Result.Loading)
-
-            sut.execute("animal")
-
-            verify(repository).getRandomJokeByCategory(any())
-        }
-    }
-
-    @Test
     fun `returns joke when success retrieving data`() {
         runBlocking {
             val joke: Joke = mock()

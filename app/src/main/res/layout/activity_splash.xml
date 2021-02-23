@@ -27,6 +27,7 @@
 
         <ProgressBar
             android:id="@+id/progress_bar"
+            android:visibility="@{viewModel.isLoading}"
             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
             android:layout_width="@dimen/zero_dp"
             android:layout_height="wrap_content"

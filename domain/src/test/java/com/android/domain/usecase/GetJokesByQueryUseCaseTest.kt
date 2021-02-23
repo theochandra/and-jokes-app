@@ -35,18 +35,6 @@ class GetJokesByQueryUseCaseTest {
     }
 
     @Test
-    fun `returns nothing when loading`() {
-        runBlocking {
-            given(repository.getJokesByQuery(any()))
-                .willReturn(Result.Loading)
-
-            sut.execute("test")
-
-            verify(repository).getJokesByQuery(any())
-        }
-    }
-
-    @Test
     fun `returns list joke when success retrieving data`() {
         runBlocking {
             val jokes: JokeList = mock()

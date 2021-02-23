@@ -1,7 +1,6 @@
 package com.android.chucknorrisjokesapp.presentation.splash
 
 import android.os.Bundle
-import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.android.chucknorrisjokesapp.R
@@ -9,7 +8,6 @@ import com.android.chucknorrisjokesapp.base.BaseActivity
 import com.android.chucknorrisjokesapp.databinding.ActivitySplashBinding
 import com.android.chucknorrisjokesapp.di.Injector
 import com.android.chucknorrisjokesapp.presentation.category.JokeCategoryActivity
-import com.android.domain.Result
 import javax.inject.Inject
 
 class SplashActivity : BaseActivity() {
@@ -33,39 +31,37 @@ class SplashActivity : BaseActivity() {
 
         binding.viewModel = viewModel
 
-        observeStateData()
+        observeCategories()
+        observeError()
+        observeException()
     }
 
-    private fun observeStateData() {
-        viewModel.stateData.observe(this, { result ->
-            when(result) {
-                Result.Loading -> {
-                    binding.progressBar.visibility = View.VISIBLE
-                }
-                is Result.Success -> {
-                    binding.progressBar.visibility = View.GONE
-                    val categories: ArrayList<String> = result.data as ArrayList<String>
-                    val intent = JokeCategoryActivity.newIntent(this, categories)
-                    startActivity(intent)
-                }
-                is Result.Error -> {
-                    binding.progressBar.visibility = View.GONE
-                    showAlertMessage(
-                        getString(R.string.label_dialog_title_alert),
-                        result.errorMessage,
-                        getString(R.string.label_button_oke)
-                    )
-                }
-                is Result.Exception -> {
-                    binding.progressBar.visibility = View.GONE
-                    result.exception.message?.let { errorMessage ->
-                        showAlertMessage(
-                            getString(R.string.label_dialog_title_alert),
-                            errorMessage,
-                            getString(R.string.label_button_oke)
-                        )
-                    }
-                }
+    private fun observeCategories() {
+        viewModel.categories.observe(this, { result ->
+            val categories: ArrayList<String> = result as ArrayList<String>
+            val intent = JokeCategoryActivity.newIntent(this, categories)
+            startActivity(intent)
+        })
+    }
+
+    private fun observeError() {
+        viewModel.error.observe(this, { errorMessage ->
+            showAlertMessage(
+                getString(R.string.label_dialog_title_alert),
+                errorMessage,
+                getString(R.string.label_button_oke)
+            )
+        })
+    }
+
+    private fun observeException() {
+        viewModel.exception.observe(this, { exception ->
+            exception.message?.let { errorMessage ->
+                showAlertMessage(
+                    getString(R.string.label_dialog_title_alert),
+                    errorMessage,
+                    getString(R.string.label_button_oke)
+                )
             }
         })
     }
