@@ -63,7 +63,7 @@ class JokeCategoryActivity : BaseActivity() {
 
     private fun searchClicked() {
         binding.etQuery.setOnClickListener {
-            val intent = Intent(this, SearchJokeActivity::class.java)
+            val intent = SearchJokeActivity.newIntent(this)
             startActivity(intent)
         }
     }

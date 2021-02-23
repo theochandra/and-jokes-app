@@ -1,9 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".presentation.search.SearchJokeActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <data>
+        <variable
+            name="viewModel"
+            type="com.android.chucknorrisjokesapp.presentation.search.SearchJokeViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".presentation.search.SearchJokeActivity">
+
+        <RelativeLayout
+            android:id="@+id/search_layout"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="@color/purple_500"
+            android:padding="@dimen/padding_s"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+
+            <ImageButton
+                android:id="@+id/iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:layout_alignTop="@+id/et_query"
+                android:layout_alignBottom="@+id/et_query"
+                android:padding="@dimen/padding_s"
+                android:src="@drawable/ic_arrow_back" />
+
+            <EditText
+                android:id="@+id/et_query"
+                android:text="@={viewModel.query}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/selector_rounded_edittext"
+                android:drawableStart="@drawable/ic_action_search"
+                android:drawablePadding="@dimen/padding_s"
+                android:hint="@string/hint_search_jokes"
+                android:imeOptions="actionSearch"
+                android:maxLines="1"
+                android:layout_toEndOf="@+id/iv_back"
+                android:layout_marginStart="@dimen/margin_s"
+                android:padding="@dimen/padding_s"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/font_size_m" />
+
+        </RelativeLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_joke"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/zero_dp"
+            android:padding="@dimen/padding_s"
+            tools:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:orientation="vertical"
+            tools:listitem="@layout/item_joke"
+            app:layout_constraintTop_toBottomOf="@+id/search_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:visibility="@{viewModel.isLoading}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

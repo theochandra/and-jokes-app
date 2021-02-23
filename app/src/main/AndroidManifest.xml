@@ -26,7 +26,8 @@
             android:name=".presentation.category.JokeCategoryActivity"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
         <activity android:name=".presentation.detail.DetailJokeActivity" />
-        <activity android:name=".presentation.search.SearchJokeActivity" />
+        <activity android:name=".presentation.search.SearchJokeActivity"
+            android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
         <activity android:name=".presentation.MainActivity" />
     </application>
 

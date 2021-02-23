@@ -92,8 +92,8 @@ class DetailJokeActivity : BaseActivity() {
     }
 
     private fun initJokeFromExtraData() {
-        jokeVM?.let { joke ->
-            binding.joke = joke
+        jokeVM?.let { jokeVM ->
+            binding.joke = jokeVM
         }
     }
 

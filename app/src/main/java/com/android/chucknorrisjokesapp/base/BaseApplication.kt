@@ -6,6 +6,7 @@ import com.android.chucknorrisjokesapp.di.application.AppComponent
 import com.android.chucknorrisjokesapp.di.application.AppModule
 import com.android.chucknorrisjokesapp.di.application.DaggerAppComponent
 import com.android.chucknorrisjokesapp.di.presentation.detail.DetailSubComponent
+import com.android.chucknorrisjokesapp.di.presentation.search.SearchSubComponent
 import com.android.chucknorrisjokesapp.di.presentation.splash.SplashSubComponent
 
 class BaseApplication : Application(), Injector {
@@ -26,6 +27,10 @@ class BaseApplication : Application(), Injector {
 
     override fun createDetailSubComponent(): DetailSubComponent {
         return appComponent.detailSubComponent().create()
+    }
+
+    override fun createSearchSubComponent(): SearchSubComponent {
+        return appComponent.searchSubComponent().create()
     }
 
 }

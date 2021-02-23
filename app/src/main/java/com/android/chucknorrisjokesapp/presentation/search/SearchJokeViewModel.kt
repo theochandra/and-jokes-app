@@ -1,4 +1,4 @@
-package com.android.chucknorrisjokesapp.presentation.detail
+package com.android.chucknorrisjokesapp.presentation.search
 
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.LiveData
@@ -8,18 +8,18 @@ import androidx.lifecycle.viewModelScope
 import com.android.chucknorrisjokesapp.presentation.mapper.JokeVmMapper
 import com.android.chucknorrisjokesapp.presentation.model.JokeVM
 import com.android.domain.Result
-import com.android.domain.usecase.GetRandomJokeByCategoryUseCase
+import com.android.domain.usecase.GetJokesByQueryUseCase
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class DetailJokeViewModel @Inject constructor(
-    private val useCase: GetRandomJokeByCategoryUseCase,
+class SearchJokeViewModel @Inject constructor(
+    private val useCase: GetJokesByQueryUseCase,
     private val mapper: JokeVmMapper
 ) : ViewModel() {
 
-    private val _joke = MutableLiveData<JokeVM>()
-    val joke: LiveData<JokeVM>
-        get() = _joke
+    private val _jokeList = MutableLiveData<List<JokeVM>>()
+    val jokeList: LiveData<List<JokeVM>>
+        get() = _jokeList
 
     private val _error = MutableLiveData<String>()
     val error: LiveData<String>
@@ -29,18 +29,23 @@ class DetailJokeViewModel @Inject constructor(
     val exception: LiveData<Exception>
         get() = _exception
 
+    val query = MutableLiveData<String>()
+    fun getQuery(): LiveData<String> {
+        return query
+    }
+
     val isLoading = ObservableBoolean()
 
-    private fun changeLoadingState(state: Boolean) {
+    fun changeLoadingState(state: Boolean) {
         isLoading.set(state)
     }
 
-    fun getRandomJokeByCategory(category: String) {
+    fun getJokesByQuery(query: String) {
         changeLoadingState(true)
         viewModelScope.launch {
-            when (val result = useCase.execute(category)) {
+            when (val result = useCase.execute(query)) {
                 is Result.Success -> {
-                    _joke.postValue(mapper.map(result.data))
+                    _jokeList.postValue(result.data.result.map { mapper.map(it) })
                 }
                 is Result.Error -> {
                     _error.postValue(result.errorMessage)
