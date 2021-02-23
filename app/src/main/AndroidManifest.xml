@@ -12,8 +12,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.ChuckNorrisJokesApp">
-        <activity android:name=".presentation.detail.DetailJokeActivity"></activity>
-        <activity android:name=".presentation.search.SearchJokeActivity" />
         <activity
             android:name=".presentation.splash.SplashActivity"
             android:noHistory="true"
@@ -27,6 +25,8 @@
         <activity
             android:name=".presentation.category.JokeCategoryActivity"
             android:theme="@style/Theme.MaterialComponents.DayNight.NoActionBar" />
+        <activity android:name=".presentation.detail.DetailJokeActivity" />
+        <activity android:name=".presentation.search.SearchJokeActivity" />
         <activity android:name=".presentation.MainActivity" />
     </application>
 

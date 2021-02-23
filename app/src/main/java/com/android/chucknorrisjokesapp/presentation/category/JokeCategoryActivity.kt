@@ -2,16 +2,16 @@ package com.android.chucknorrisjokesapp.presentation.category
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.android.chucknorrisjokesapp.R
+import com.android.chucknorrisjokesapp.base.BaseActivity
 import com.android.chucknorrisjokesapp.databinding.ActivityJokeCategoryBinding
 import com.android.chucknorrisjokesapp.presentation.detail.DetailJokeActivity
 import com.android.chucknorrisjokesapp.presentation.search.SearchJokeActivity
 
-class JokeCategoryActivity : AppCompatActivity() {
+class JokeCategoryActivity : BaseActivity() {
 
     companion object {
         private const val EXTRA_CATEGORIES = "EXTRA_CATEGORIES"
@@ -57,7 +57,7 @@ class JokeCategoryActivity : AppCompatActivity() {
     }
 
     private fun categoryItemClicked(category: String) {
-        val intent = Intent(this, DetailJokeActivity::class.java)
+        val intent = DetailJokeActivity.newIntent(this, category)
         startActivity(intent)
     }
 
