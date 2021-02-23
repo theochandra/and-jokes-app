@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.android.chucknorrisjokesapp.R
@@ -45,7 +46,6 @@ class DetailJokeActivity : BaseActivity() {
         intent.getParcelableExtra<JokeVM>(EXTRA_PARCEL_JOKE)?.let {
             jokeVM = it
         }
-//        jokeVM = intent.getParcelableExtra(EXTRA_PARCEL_JOKE)
     }
 
     @Inject
@@ -68,11 +68,13 @@ class DetailJokeActivity : BaseActivity() {
         binding.viewModel = viewModel
 
         getExtraData()
+        initBottomButton()
         initJokeFromExtraData()
         getRandomJokeByCategory()
         observeJoke()
         observeError()
         observeException()
+        onRefreshClicked()
 
         supportActionBar?.apply {
             setDisplayShowTitleEnabled(true)
@@ -89,6 +91,11 @@ class DetailJokeActivity : BaseActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun initBottomButton() {
+        if (jokeVM == null) binding.btnRefresh.visibility = View.VISIBLE
+        else binding.btnRefresh.visibility = View.GONE
     }
 
     private fun initJokeFromExtraData() {
@@ -128,6 +135,12 @@ class DetailJokeActivity : BaseActivity() {
                 )
             }
         })
+    }
+
+    private fun onRefreshClicked() {
+        binding.btnRefresh.setOnClickListener {
+            getRandomJokeByCategory()
+        }
     }
 
 }
