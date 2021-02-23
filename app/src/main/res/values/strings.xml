@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">ChuckNorrisJokesApp</string>
+
+    <string name="label_button_oke">Oke</string>
+    <string name="label_dialog_title_alert">Alert</string>
+
+    <string name="hint_search_jokes">Type to search some jokes..</string>
+
+    <string name="label_share_subject">Check this joke from Chuck Norris</string>
+    <string name="label_share_body">Check this Chuck Norris\'s funny joke\n%1$s</string>
+    <string name="label_share_using">Share using</string>
+
+    <string name="label_data_not_found">Jokes not found\nTry use another keywords..</string>
 </resources>
