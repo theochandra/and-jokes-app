@@ -3,6 +3,7 @@ package com.android.chucknorrisjokesapp.presentation.search
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -91,6 +92,9 @@ class SearchJokeActivity : BaseActivity() {
 
     private fun observeJokeList() {
         viewModel.jokeList.observe(this, { jokeList ->
+            if (jokeList.isEmpty())
+                binding.layoutNotFound.visibility = View.VISIBLE
+            else binding.layoutNotFound.visibility = View.GONE
             jokeAdapter.setJokeList(jokeList)
         })
     }
