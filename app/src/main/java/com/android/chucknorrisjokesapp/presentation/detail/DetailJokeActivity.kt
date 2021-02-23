@@ -75,6 +75,7 @@ class DetailJokeActivity : BaseActivity() {
         observeError()
         observeException()
         onRefreshClicked()
+        onShareClicked(binding.tvValue.text.toString())
 
         supportActionBar?.apply {
             setDisplayShowTitleEnabled(true)
@@ -140,6 +141,17 @@ class DetailJokeActivity : BaseActivity() {
     private fun onRefreshClicked() {
         binding.btnRefresh.setOnClickListener {
             getRandomJokeByCategory()
+        }
+    }
+
+    private fun onShareClicked(value: String) {
+        binding.btnShare.setOnClickListener {
+            val intent = Intent(Intent.ACTION_SEND)
+            val shareBody = getString(R.string.label_share_body, value)
+            intent.type = "text/plain"
+            intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.label_share_subject));
+            intent.putExtra(Intent.EXTRA_TEXT, shareBody);
+            startActivity(Intent.createChooser(intent, getString(R.string.label_share_using)))
         }
     }
 
